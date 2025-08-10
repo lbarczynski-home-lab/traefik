@@ -4,10 +4,22 @@ include:
           vm-hostname: media.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
           vm-ssh-private-key: $SSH_PRIVATE_KEY
-          service-name: traefik
+          service-name: traefik:media-vm
           container-name: traefik
           container-location: /opt/containers/traefik
           cloudflare-dns-entry-name: traefik-media.intranet.xbhl.online
+          cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+          cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+          container-healthcheck-delay: 10
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.2
+      inputs:
+          vm-hostname: infrastructure.vm.xbhl.intranet
+          vm-ssh-username: $SSH_USER
+          vm-ssh-private-key: $SSH_PRIVATE_KEY
+          service-name: traefik:infrastructure-vm
+          container-name: traefik
+          container-location: /opt/containers/traefik
+          cloudflare-dns-entry-name: traefik-infrastructure.intranet.xbhl.online
           cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
           cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
           container-healthcheck-delay: 10
