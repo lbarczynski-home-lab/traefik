@@ -1,0 +1,23 @@
+services:
+    traefik:
+        image: traefik:v3.5.0
+        container_name: traefik
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /etc/ssl/certs:/etc/ssl/certs:ro
+            - ./config/letsencrypt:/letsencrypt
+            - ./config/traefik.yml:/etc/traefik/traefik.yml
+            - ./config/dynamic:/dynamic-config-files
+        environment:
+            - CLOUDFLARE_ZONE_API_TOKEN=${CLOUDFLARE_ZONE_API_TOKEN}
+            - CLOUDFLARE_DNS_API_TOKEN=${CLOUDFLARE_DNS_API_TOKEN}
+        healthcheck:
+            test: wget --quiet --tries=1 --spider http://localhost:8080/ping || exit 1
+            interval: 5s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
+        restart: unless-stopped
