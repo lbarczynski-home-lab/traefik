@@ -1,5 +1,5 @@
 include:
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.5
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.6
       inputs:
           vm-hostname: media.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
@@ -12,7 +12,7 @@ include:
           cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
           container-healthcheck-delay: 10
 
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.5
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.6
       inputs:
           vm-hostname: infrastructure.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
