@@ -1,5 +1,5 @@
 include:
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.10
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.11
       inputs:
           vm-hostname: media.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
@@ -13,7 +13,7 @@ include:
           container-healthcheck-delay: 10
           delete-existing-container-files: true
 
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.10
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.11
       inputs:
           vm-hostname: infrastructure.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
