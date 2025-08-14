@@ -1,5 +1,5 @@
 include:
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.12
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.13
       inputs:
           vm-hostname: media.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
@@ -13,7 +13,7 @@ include:
           container-healthcheck-delay: 10
           delete-existing-container-files: true
 
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.12
+    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.0.13
       inputs:
           vm-hostname: infrastructure.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
@@ -29,7 +29,7 @@ include:
 
 setup:generate-build-artifacts:
     script:
-        - touch $BUILD_ARTIFACTS_DIR/.env
+        - cp src/.env $BUILD_ARTIFACTS_DIR
         - echo CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID >> $BUILD_ARTIFACTS_DIR/.env
         - echo CLOUDFLARE_ZONE_API_TOKEN=$CLOUDFLARE_ZONE_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
         - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env

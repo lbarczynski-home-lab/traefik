@@ -1,6 +1,6 @@
 services:
     traefik:
-        image: traefik:v3.5.0
+        image: traefik:${TRAEFIK_VERSION:?err}
         container_name: traefik
         ports:
             - "80:80"
@@ -8,12 +8,12 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /etc/ssl/certs:/etc/ssl/certs:ro
-            - traefik_letsencrypt:/letsencrypt
-            - ./config/traefik.yml:/etc/traefik/traefik.yml
-            - ./config/dynamic:/dynamic-config-files
+            - letsencrypt:/letsencrypt
+            - static-config:/etc/traefik:ro
+            - dynamic-config:/dynamic-config-files:ro
         environment:
-            - CLOUDFLARE_ZONE_API_TOKEN=${CLOUDFLARE_ZONE_API_TOKEN}
-            - CLOUDFLARE_DNS_API_TOKEN=${CLOUDFLARE_DNS_API_TOKEN}
+            - CLOUDFLARE_ZONE_API_TOKEN=${CLOUDFLARE_ZONE_API_TOKEN:?err}
+            - CLOUDFLARE_DNS_API_TOKEN=${CLOUDFLARE_DNS_API_TOKEN:?err}
         healthcheck:
             test: wget --quiet --tries=1 --spider http://localhost:8080/ping || exit 1
             interval: 5s
@@ -23,4 +23,19 @@ services:
         restart: unless-stopped
 
 volumes:
-    traefik_letsencrypt:
+    letsencrypt:
+        driver: local
+
+    static-config:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: ./static-config
+
+    dynamic-config:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: ./dynamic-config
