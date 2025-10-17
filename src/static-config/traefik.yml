@@ -19,6 +19,7 @@ entryPoints:
                 domains:
                     - main: "xbhl.online"
                       sans:
+                          - "*.xbhl.online"
                           - "*.intranet.xbhl.online"
 
 serversTransport:
