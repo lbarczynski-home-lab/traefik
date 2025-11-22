@@ -45,3 +45,4 @@ volumes:
 networks:
     proxy:
         name: proxy
+        external: true # network by script in CICD automations template.yml
