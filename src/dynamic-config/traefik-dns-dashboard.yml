@@ -1,0 +1,6 @@
+http:
+    routers:
+        traefik-dashboard-router:
+            rule: "Host(`traefik-dns.intranet.xbhl.online`)"
+            service: api@internal
+            tls: true
