@@ -43,7 +43,7 @@ include:
           vm-hostname: cloud.vm.xbhl.intranet
           vm-ssh-username: $SSH_USER
           vm-ssh-private-key: $SSH_PRIVATE_KEY
-          service-name: traefik:dns-vm
+          service-name: traefik:cloud-vm
           container-name: traefik
           container-location: /opt/containers/traefik
           cloudflare-dns-entry-name: traefik-cloud.intranet.xbhl.online
