@@ -6,7 +6,7 @@ stages:
   - .post
 
 include:
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.1
     inputs:
       vm-hostname: media.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -21,7 +21,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.1
     inputs:
       vm-hostname: infrastructure.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -36,7 +36,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.1
     inputs:
       vm-hostname: dns.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -51,7 +51,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.1
     inputs:
       vm-hostname: cloud.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -66,7 +66,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.1
     inputs:
       vm-hostname: ha.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -81,9 +81,65 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.1
+    inputs:
+      vm-hostname: nas.srv.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:nas-srv
+      container-name: traefik
+      container-location: /share/Container/services/traefik
+      source-files-path: "src/shared"
+      additional-files-path: "src/nodes/nas"
+      cloudflare-dns-entry-name: traefik.nas.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
+
 setup:generate-build-artifacts:
   script:
     - touch $BUILD_ARTIFACTS_DIR/.env
     - echo CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID >> $BUILD_ARTIFACTS_DIR/.env
     - echo CLOUDFLARE_ZONE_API_TOKEN=$CLOUDFLARE_ZONE_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
     - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
+
+# Additional Jobs to update DNS records for QNAP domain records as it's not Docker service
+deploy:traefik:nas-srv:update-intranet-dns-entry:
+  stage: deploy
+  image: alpine:${ALPINE_IMAGE_VERSION}
+  needs:
+    - "deploy:traefik:nas-srv:start-service"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+  variables:
+    DNS_RECORD_TYPE: "A"
+    DNS_TTL: 120
+    DNS_PROXIED: "false"
+    CLOUDFLARE_DNS_ENTRY_NAME: "nas.intranet.xbhl.online"
+  before_script:
+    - apk add --no-cache curl jq bind-tools
+  script:
+    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
+    - echo "Resolved virtual machine IP - $VM_IP"
+    - export DNS_CONTENT="$VM_IP"
+    - !reference [.cloudflare-update-script, script]
+
+deploy:traefik:nas-srv:update-main-domain-dns-entry:
+  stage: deploy
+  image: alpine:${ALPINE_IMAGE_VERSION}
+  needs:
+    - "deploy:traefik:nas-srv:start-service"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+  variables:
+    DNS_RECORD_TYPE: "A"
+    DNS_TTL: 120
+    DNS_PROXIED: "false"
+    CLOUDFLARE_DNS_ENTRY_NAME: "nas.xbhl.online"
+  before_script:
+    - apk add --no-cache curl jq bind-tools
+  script:
+    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
+    - echo "Resolved virtual machine IP - $VM_IP"
+    - export DNS_CONTENT="$VM_IP"
+    - !reference [.cloudflare-update-script, script]

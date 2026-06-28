@@ -1,0 +1,37 @@
+http:
+  routers:
+    nas-router:
+      rule: "Host(`nas.intranet.xbhl.online`)"
+      entryPoints:
+        - "websecure"
+      service: nas
+
+    redirect-router:
+      rule: "Host(`nas.xbhl.online`)"
+      entryPoints:
+        - "websecure"
+      middlewares:
+        - main-to-intranet-qnap-redirect
+      service: noop@internal
+
+    object-storage-nas-router:
+      rule: "Host(`objectstorage.nas.intranet.xbhl.online`)"
+      entryPoints:
+        - "websecure"
+      service: nas-object-storage
+
+  middlewares:
+    main-to-intranet-qnap-redirect:
+      redirectRegex:
+        regex: "^https://nas.xbhl.online/(.*)"
+        replacement: "https://nas.intranet.xbhl.online/${1}"
+
+  services:
+    nas:
+      loadBalancer:
+        servers:
+          - url: "https://nas.srv.xbhl.intranet:8443"
+    nas-object-storage:
+      loadBalancer:
+        servers:
+          - url: "http://nas.srv.xbhl.intranet:8010"

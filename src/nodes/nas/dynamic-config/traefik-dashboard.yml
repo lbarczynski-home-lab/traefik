@@ -1,0 +1,6 @@
+http:
+    routers:
+        traefik-nas-dashboard-router:
+            rule: "Host(`traefik.nas.intranet.xbhl.online`)"
+            service: api@internal
+            tls: true
