@@ -30,7 +30,7 @@ http:
     nas:
       loadBalancer:
         servers:
-          - url: "https://nas.srv.xbhl.intranet:8443"
+          - url: "http://nas.srv.xbhl.intranet:8080"
     nas-object-storage:
       loadBalancer:
         servers:
