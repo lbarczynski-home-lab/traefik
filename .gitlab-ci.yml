@@ -1,67 +1,82 @@
 include:
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
-      inputs:
-          vm-hostname: media.vm.xbhl.intranet
-          vm-ssh-username: $SSH_USER
-          vm-ssh-private-key: $SSH_PRIVATE_KEY
-          service-name: traefik:media-vm
-          container-name: traefik
-          container-location: /opt/containers/traefik
-          source-files-path: "src/shared/"
-          additional-files-path: "src/nodes/media/"
-          cloudflare-dns-entry-name: traefik-media.intranet.xbhl.online
-          cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
-          cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
-          delete-existing-container-files: true
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
+    inputs:
+      vm-hostname: media.vm.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:media-vm
+      container-name: traefik
+      container-location: /opt/containers/traefik
+      source-files-path: "src/shared/"
+      additional-files-path: "src/nodes/media/"
+      cloudflare-dns-entry-name: traefik-media.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
 
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
-      inputs:
-          vm-hostname: infrastructure.vm.xbhl.intranet
-          vm-ssh-username: $SSH_USER
-          vm-ssh-private-key: $SSH_PRIVATE_KEY
-          service-name: traefik:infrastructure-vm
-          container-name: traefik
-          container-location: /opt/containers/traefik
-          source-files-path: "src/shared/"
-          additional-files-path: "src/nodes/infrastructure/"
-          cloudflare-dns-entry-name: traefik-infrastructure.intranet.xbhl.online
-          cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
-          cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
-          delete-existing-container-files: true
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
+    inputs:
+      vm-hostname: infrastructure.vm.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:infrastructure-vm
+      container-name: traefik
+      container-location: /opt/containers/traefik
+      source-files-path: "src/shared/"
+      additional-files-path: "src/nodes/infrastructure/"
+      cloudflare-dns-entry-name: traefik-infrastructure.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
 
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
-      inputs:
-          vm-hostname: dns.vm.xbhl.intranet
-          vm-ssh-username: $SSH_USER
-          vm-ssh-private-key: $SSH_PRIVATE_KEY
-          service-name: traefik:dns-vm
-          container-name: traefik
-          container-location: /opt/containers/traefik
-          source-files-path: "src/shared/"
-          additional-files-path: "src/nodes/dns/"
-          cloudflare-dns-entry-name: traefik-dns.intranet.xbhl.online
-          cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
-          cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
-          delete-existing-container-files: true
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
+    inputs:
+      vm-hostname: dns.vm.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:dns-vm
+      container-name: traefik
+      container-location: /opt/containers/traefik
+      source-files-path: "src/shared/"
+      additional-files-path: "src/nodes/dns/"
+      cloudflare-dns-entry-name: traefik-dns.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
 
-    - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
-      inputs:
-          vm-hostname: cloud.vm.xbhl.intranet
-          vm-ssh-username: $SSH_USER
-          vm-ssh-private-key: $SSH_PRIVATE_KEY
-          service-name: traefik:cloud-vm
-          container-name: traefik
-          container-location: /opt/containers/traefik
-          source-files-path: "src/shared/"
-          additional-files-path: "src/nodes/cloud/"
-          cloudflare-dns-entry-name: traefik-cloud.intranet.xbhl.online
-          cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
-          cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
-          delete-existing-container-files: true
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
+    inputs:
+      vm-hostname: cloud.vm.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:cloud-vm
+      container-name: traefik
+      container-location: /opt/containers/traefik
+      source-files-path: "src/shared/"
+      additional-files-path: "src/nodes/cloud/"
+      cloudflare-dns-entry-name: traefik-cloud.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
+
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.0
+    inputs:
+      vm-hostname: ha.vm.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:ha-vm
+      container-name: traefik
+      container-location: /opt/containers/traefik
+      source-files-path: "src/shared/"
+      additional-files-path: "src/nodes/ha/"
+      cloudflare-dns-entry-name: traefik.ha.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
 
 setup:generate-build-artifacts:
-    script:
-        - touch $BUILD_ARTIFACTS_DIR/.env
-        - echo CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID >> $BUILD_ARTIFACTS_DIR/.env
-        - echo CLOUDFLARE_ZONE_API_TOKEN=$CLOUDFLARE_ZONE_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
-        - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
+  script:
+    - touch $BUILD_ARTIFACTS_DIR/.env
+    - echo CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID >> $BUILD_ARTIFACTS_DIR/.env
+    - echo CLOUDFLARE_ZONE_API_TOKEN=$CLOUDFLARE_ZONE_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
+    - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env

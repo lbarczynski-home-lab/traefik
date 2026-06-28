@@ -21,6 +21,15 @@ entryPoints:
                       sans:
                           - "*.xbhl.online"
                           - "*.intranet.xbhl.online"
+                    - main: "ha.intranet.xbhl.online"
+                      sans:
+                          - "*.ha.intranet.xbhl.online"
+    mqtt:
+        address: ":1883"
+    mqtts:
+        address: ":8883"
+    mqtt-webockets:
+        address: ":9002"
 
 serversTransport:
     insecureSkipVerify: false

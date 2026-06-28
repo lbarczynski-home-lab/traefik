@@ -1,0 +1,162 @@
+http:
+  routers:
+    # home-assistant-core-external-router:
+    #   rule: "Host(`ha.xbhl.online`)"
+    #   service: home-assistant-core
+    #   entryPoints:
+    #     - "websecure"
+    #   middlewares:
+    #     - home-assistant-core-headers
+    #   tls: true
+
+    home-assistant-core-intranet-router:
+      rule: "Host(`ha.intranet.xbhl.online`)"
+      service: home-assistant-core
+      entryPoints:
+        - "websecure"
+      middlewares:
+        - home-assistant-core-headers
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    zigbee2mqtt-router:
+      rule: "Host(`zigbee2mqtt.ha.intranet.xbhl.online`)"
+      service: zigbee2mqtt
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    nodered-router:
+      rule: "Host(`nodered.ha.intranet.xbhl.online`)"
+      service: nodered
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    appdaemon-router:
+      rule: "Host(`appdaemon.ha.intranet.xbhl.online`)"
+      service: appdaemon
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    esphome-router:
+      rule: "Host(`esphome.ha.intranet.xbhl.online`)"
+      service: esphome
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    vscode-router:
+      rule: "Host(`vscode.ha.intranet.xbhl.online`)"
+      service: vscode
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    glances-router:
+      rule: "Host(`glances.ha.intranet.xbhl.online`)"
+      service: glances
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+    pgadmin-router:
+      rule: "Host(`pgadmin.ha.intranet.xbhl.online`)"
+      service: pgadmin
+      entryPoints:
+        - "websecure"
+      tls:
+        certResolver: "cloudflare_dns_production"
+
+  middlewares:
+    home-assistant-core-headers:
+      headers:
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        referrerPolicy: "same-origin"
+
+  services:
+    home-assistant-core:
+      loadBalancer:
+        servers:
+          - url: "https://ha.vm.xbhl.intranet:8123"
+    zigbee2mqtt:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:8125"
+    appdaemon:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:5050"
+    nodered:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:1880"
+    esphome:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:6052"
+    vscode:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:8443"
+    glances:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:61208"
+    pgadmin:
+      loadBalancer:
+        servers:
+          - url: "http://ha.vm.xbhl.intranet:8080"
+
+# tcp:
+#   routers:
+#     ha-mqtt-router:
+#       entryPoints:
+#         - mqtt
+#       rule: "HostSNI(`*`)"
+#       service: ha-mqtt-service
+#
+#     ha-mqtts-router:
+#       entryPoints:
+#         - mqtts
+#       rule: "HostSNI(`*`)"
+#       service: ha-mqtts-service
+#       tls:
+#         certResolver: cloudflare_dns
+#         domains:
+#           - main: "ha.intranet.xbhl.online"
+#             sans:
+#               - "mqtt.ha.intranet.xbhl.online"
+#
+#     ha-webockets-router:
+#       entryPoints:
+#         - mqtt-webockets
+#       rule: "HostSNI(`*`)"
+#       service: ha-mqtt-websockets-service
+#       tls:
+#         certResolver: cloudflare_dns
+#         domains:
+#           - main: "ha.xbhl.online"
+#             sans:
+#               - "mqtt.ha.xbhl.online"
+#   services:
+#     ha-mqtt-service:
+#       loadBalancer:
+#         servers:
+#           - address: "ha.vm.xbhl.intranet:1883"
+#     ha-mqtts-service:
+#       loadBalancer:
+#         servers:
+#           - address: "ha.vm.xbhl.intranet:8883"
+#     ha-mqtt-websockets-service:
+#       loadBalancer:
+#         servers:
+#           - address: "ha.vm.xbhl.intranet:9002"
