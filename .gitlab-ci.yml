@@ -6,7 +6,7 @@ stages:
   - .post
 
 include:
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.2
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
       vm-hostname: media.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -21,7 +21,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.2
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
       vm-hostname: infrastructure.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -36,7 +36,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.2
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
       vm-hostname: dns.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -51,7 +51,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.2
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
       vm-hostname: cloud.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -66,7 +66,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.2
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
       vm-hostname: ha.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -81,7 +81,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.2
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
       vm-hostname: nas.srv.xbhl.intranet
       vm-ssh-username: $SSH_USER
