@@ -1,5 +1,12 @@
+stages:
+  - .pre
+  - test
+  - deploy
+  - verify
+  - .post
+
 include:
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.1
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
     inputs:
       vm-hostname: media.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -14,7 +21,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.1
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
     inputs:
       vm-hostname: infrastructure.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -29,7 +36,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.1
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
     inputs:
       vm-hostname: dns.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -44,7 +51,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.1
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
     inputs:
       vm-hostname: cloud.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -59,7 +66,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v1.2.1
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.0
     inputs:
       vm-hostname: ha.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -80,43 +87,3 @@ setup:generate-build-artifacts:
     - echo CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID >> $BUILD_ARTIFACTS_DIR/.env
     - echo CLOUDFLARE_ZONE_API_TOKEN=$CLOUDFLARE_ZONE_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
     - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
-
-setup:traefik:media-vm:preconfigure-remote-machine:
-  script:
-    - |
-      echo "🔵 Makeing sure that Docker \"proxy\" network exists on the remote machine..."
-      ssh $VM_SSH_USERNAME@$VM_HOST "
-          docker network inspect proxy > /dev/null 2>&1 || docker network create proxy
-      "
-
-setup:traefik:dns-vm:preconfigure-remote-machine:
-  script:
-    - |
-      echo "🔵 Makeing sure that Docker \"proxy\" network exists on the remote machine..."
-      ssh $VM_SSH_USERNAME@$VM_HOST "
-          docker network inspect proxy > /dev/null 2>&1 || docker network create proxy
-      "
-
-setup:traefik:infrastructure-vm:preconfigure-remote-machine:
-  script:
-    - |
-      echo "🔵 Makeing sure that Docker \"proxy\" network exists on the remote machine..."
-      ssh $VM_SSH_USERNAME@$VM_HOST "
-          docker network inspect proxy > /dev/null 2>&1 || docker network create proxy
-      "
-
-setup:traefik:cloud-vm:preconfigure-remote-machine:
-  script:
-    - |
-      echo "🔵 Makeing sure that Docker \"proxy\" network exists on the remote machine..."
-      ssh $VM_SSH_USERNAME@$VM_HOST "
-          docker network inspect proxy > /dev/null 2>&1 || docker network create proxy
-      "
-
-setup:traefik:ha-vm:preconfigure-remote-machine:
-  script:
-    - |
-      echo "🔵 Makeing sure that Docker \"proxy\" network exists on the remote machine..."
-      ssh $VM_SSH_USERNAME@$VM_HOST "
-          docker network inspect proxy > /dev/null 2>&1 || docker network create proxy
-      "
