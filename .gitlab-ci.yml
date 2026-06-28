@@ -104,6 +104,26 @@ setup:generate-build-artifacts:
     - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
 
 # Additional Jobs to update DNS records for QNAP domain records as it's not Docker service
+deploy:traefik:nas-srv:update-main-domain-dns-entry:
+  stage: deploy
+  image: alpine:${ALPINE_IMAGE_VERSION}
+  needs:
+    - "deploy:traefik:nas-srv:start-service"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+  variables:
+    DNS_RECORD_TYPE: "A"
+    DNS_TTL: 120
+    DNS_PROXIED: "false"
+    CLOUDFLARE_DNS_ENTRY_NAME: "nas.xbhl.online"
+  before_script:
+    - apk add --no-cache curl jq bind-tools
+  script:
+    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
+    - echo "Resolved virtual machine IP - $VM_IP"
+    - export DNS_CONTENT="$VM_IP"
+    - !reference [.cloudflare-update-script, script]
+
 deploy:traefik:nas-srv:update-intranet-dns-entry:
   stage: deploy
   image: alpine:${ALPINE_IMAGE_VERSION}
@@ -124,7 +144,7 @@ deploy:traefik:nas-srv:update-intranet-dns-entry:
     - export DNS_CONTENT="$VM_IP"
     - !reference [.cloudflare-update-script, script]
 
-deploy:traefik:nas-srv:update-main-domain-dns-entry:
+deploy:traefik:nas-srv:update-s3-dns-entry:
   stage: deploy
   image: alpine:${ALPINE_IMAGE_VERSION}
   needs:
@@ -135,7 +155,7 @@ deploy:traefik:nas-srv:update-main-domain-dns-entry:
     DNS_RECORD_TYPE: "A"
     DNS_TTL: 120
     DNS_PROXIED: "false"
-    CLOUDFLARE_DNS_ENTRY_NAME: "nas.xbhl.online"
+    CLOUDFLARE_DNS_ENTRY_NAME: "objectstorage.nas.intranet.xbhl.online"
   before_script:
     - apk add --no-cache curl jq bind-tools
   script:
