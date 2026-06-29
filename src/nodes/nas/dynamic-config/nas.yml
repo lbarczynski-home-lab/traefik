@@ -14,6 +14,12 @@ http:
         - main-to-intranet-qnap-redirect
       service: noop@internal
 
+    s3-router:
+      rule: "Host(`s3.intranet.xbhl.online`)"
+      entryPoints:
+        - "websecure"
+      service: nas-object-storage
+
     object-storage-nas-router:
       rule: "Host(`objectstorage.nas.intranet.xbhl.online`)"
       entryPoints:
