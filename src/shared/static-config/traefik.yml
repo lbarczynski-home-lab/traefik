@@ -15,18 +15,14 @@ entryPoints:
                 readTimeout: 3600
         http:
             tls:
-                certResolver: cloudflare_dns_production
+                certResolver: letsencrypt_prod
                 domains:
                     - main: "xbhl.online"
                       sans:
                           - "*.xbhl.online"
                           - "*.intranet.xbhl.online"
-                    - main: "ha.intranet.xbhl.online"
-                      sans:
-                          - "*.ha.intranet.xbhl.online"
-                    - main: "nas.intranet.xbhl.online"
-                      sans:
                           - "*.nas.intranet.xbhl.online"
+                          - "*.ha.intranet.xbhl.online"
     mqtt:
         address: ":1883"
     mqtts:
@@ -38,7 +34,7 @@ serversTransport:
     insecureSkipVerify: false
 
 certificatesResolvers:
-    cloudflare_dns_staging:
+    letsencrypt_stg:
         acme:
             email: barczynski.lukasz@gmail.com
             storage: /letsencrypt/acme-stg.json
@@ -49,7 +45,7 @@ certificatesResolvers:
                     - 1.1.1.1:53
                     - 8.8.8.8:53
 
-    cloudflare_dns_production:
+    letsencrypt_prod:
         acme:
             email: barczynski.lukasz@gmail.com
             storage: /letsencrypt/acme.json

@@ -5,6 +5,15 @@ stages:
   - verify
   - .post
 
+default:
+  before_script:
+    - |
+      if [ "$CI_JOB_STAGE" == "test" ]; then
+        echo "Test job detected. Overriding certResolver to staging..."
+        ./scripts/update_cert_resolver.sh "letsencrypt_stg"
+        cat src/shared/static-config/traefik.yml
+      fi
+
 include:
   - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.3
     inputs:
