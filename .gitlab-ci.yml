@@ -10,7 +10,8 @@ default:
     - |
       if [ "$CI_JOB_STAGE" == "test" ]; then
         echo "Test job detected. Overriding certResolver to staging..."
-        ./scripts/update_cert_resolver.sh "letsencrypt_stg"
+        ./scripts/update_cert_resolver.sh "src/shared/static-config/traefik.yml" "letsencrypt_stg"
+        ./scripts/update_cert_resolver.sh "src/nodes/ha/dynamic-config/home-assistant.yml" "letsencrypt_stg"
         cat src/shared/static-config/traefik.yml
       fi
 
