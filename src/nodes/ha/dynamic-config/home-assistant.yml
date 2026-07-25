@@ -35,14 +35,6 @@ http:
       tls:
         certResolver: "cloudflare_dns_production"
 
-    appdaemon-router:
-      rule: "Host(`appdaemon.ha.intranet.xbhl.online`)"
-      service: appdaemon
-      entryPoints:
-        - "websecure"
-      tls:
-        certResolver: "cloudflare_dns_production"
-
     esphome-router:
       rule: "Host(`esphome.ha.intranet.xbhl.online`)"
       service: esphome
@@ -91,10 +83,6 @@ http:
       loadBalancer:
         servers:
           - url: "http://ha.vm.xbhl.intranet:8125"
-    appdaemon:
-      loadBalancer:
-        servers:
-          - url: "http://ha.vm.xbhl.intranet:5050"
     nodered:
       loadBalancer:
         servers:
