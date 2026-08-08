@@ -41,3 +41,18 @@ http:
       loadBalancer:
         servers:
           - url: "http://nas.srv.xbhl.intranet:8010"
+
+tcp:
+  routers:
+    ldap-router:
+      rule: "HostSNI(`ldap.intranet.xbhl.online`)"
+      entryPoints:
+        - "websecure"
+      service: ldap-nas
+      tls: {}
+      
+  services:
+    ldap-nas:
+      loadBalancer:
+        servers:
+          - address: "nas.srv.xbhl.intranet:389"
