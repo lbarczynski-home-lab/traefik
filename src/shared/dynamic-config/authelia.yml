@@ -1,0 +1,11 @@
+http:
+  middlewares:
+    authelia:
+      forwardAuth:
+        address: "https://auth.xbhl.online/api/verify?rd=https%3A%2F%2Fauth.xbhl.online%2F"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "Remote-User"
+          - "Remote-Groups"
+          - "Remote-Name"
+          - "Remote-Email"
