@@ -59,7 +59,9 @@ providers:
     file:
         directory: /dynamic-config-files
         watch: true
-    docker: {}
+    docker:
+        exposedByDefault: false
+        network: proxy
 
 api:
     dashboard: true
