@@ -86,6 +86,21 @@ include:
 
   - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.5
     inputs:
+      vm-hostname: code.vm.xbhl.intranet
+      vm-ssh-username: $SSH_USER
+      vm-ssh-private-key: $SSH_PRIVATE_KEY
+      service-name: traefik:code-vm
+      container-name: traefik
+      container-location: /opt/containers/traefik
+      source-files-path: "src/shared"
+      additional-files-path: "src/nodes/code"
+      cloudflare-dns-entry-name: traefik-code.intranet.xbhl.online
+      cloudflare-zone-id: $CLOUDFLARE_ZONE_ID
+      cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
+      delete-existing-container-files: true
+
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.0.5
+    inputs:
       vm-hostname: nas.srv.xbhl.intranet
       vm-ssh-username: $SSH_USER
       vm-ssh-private-key: $SSH_PRIVATE_KEY
