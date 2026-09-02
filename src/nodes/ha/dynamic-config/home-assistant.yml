@@ -17,7 +17,7 @@ http:
       middlewares:
         - home-assistant-core-headers
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
     zigbee2mqtt-router:
       rule: "Host(`zigbee2mqtt.ha.intranet.xbhl.online`)"
@@ -25,7 +25,7 @@ http:
       entryPoints:
         - "websecure"
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
     nodered-router:
       rule: "Host(`nodered.ha.intranet.xbhl.online`)"
@@ -33,7 +33,7 @@ http:
       entryPoints:
         - "websecure"
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
     esphome-router:
       rule: "Host(`esphome.ha.intranet.xbhl.online`)"
@@ -41,7 +41,7 @@ http:
       entryPoints:
         - "websecure"
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
     vscode-router:
       rule: "Host(`vscode.ha.intranet.xbhl.online`)"
@@ -49,7 +49,7 @@ http:
       entryPoints:
         - "websecure"
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
     glances-router:
       rule: "Host(`glances.ha.intranet.xbhl.online`)"
@@ -57,7 +57,7 @@ http:
       entryPoints:
         - "websecure"
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
     pgadmin-router:
       rule: "Host(`pgadmin.ha.intranet.xbhl.online`)"
@@ -65,7 +65,7 @@ http:
       entryPoints:
         - "websecure"
       tls:
-        certResolver: "cloudflare_dns_production"
+        certResolver: "letsencrypt_prod"
 
   middlewares:
     home-assistant-core-headers:
