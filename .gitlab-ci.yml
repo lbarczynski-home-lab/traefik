@@ -121,107 +121,6 @@ setup:generate-build-artifacts:
     - echo CLOUDFLARE_ZONE_API_TOKEN=$CLOUDFLARE_ZONE_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
     - echo CLOUDFLARE_DNS_API_TOKEN=$CLOUDFLARE_DNS_API_TOKEN >> $BUILD_ARTIFACTS_DIR/.env
 
-# Additional Jobs to update DNS records for QNAP domain records as it's not Docker service
-deploy:traefik:nas-srv:update-main-domain-dns-entry:
-  stage: deploy
-  image: alpine:${ALPINE_IMAGE_VERSION}
-  needs:
-    - "deploy:traefik:nas-srv:start-service"
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
-  variables:
-    DNS_RECORD_TYPE: "A"
-    DNS_TTL: 120
-    DNS_PROXIED: "false"
-    CLOUDFLARE_DNS_ENTRY_NAME: "nas.xbhl.online"
-  before_script:
-    - apk add --no-cache curl jq bind-tools
-  script:
-    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
-    - echo "Resolved virtual machine IP - $VM_IP"
-    - export DNS_CONTENT="$VM_IP"
-    - !reference [.cloudflare-update-script, script]
-
-deploy:traefik:nas-srv:update-intranet-dns-entry:
-  stage: deploy
-  image: alpine:${ALPINE_IMAGE_VERSION}
-  needs:
-    - "deploy:traefik:nas-srv:start-service"
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
-  variables:
-    DNS_RECORD_TYPE: "A"
-    DNS_TTL: 120
-    DNS_PROXIED: "false"
-    CLOUDFLARE_DNS_ENTRY_NAME: "nas.intranet.xbhl.online"
-  before_script:
-    - apk add --no-cache curl jq bind-tools
-  script:
-    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
-    - echo "Resolved virtual machine IP - $VM_IP"
-    - export DNS_CONTENT="$VM_IP"
-    - !reference [.cloudflare-update-script, script]
-
-deploy:traefik:nas-srv:update-nas-objectstorage-dns-entry:
-  stage: deploy
-  image: alpine:${ALPINE_IMAGE_VERSION}
-  needs:
-    - "deploy:traefik:nas-srv:start-service"
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
-  variables:
-    DNS_RECORD_TYPE: "A"
-    DNS_TTL: 120
-    DNS_PROXIED: "false"
-    CLOUDFLARE_DNS_ENTRY_NAME: "objectstorage.nas.intranet.xbhl.online"
-  before_script:
-    - apk add --no-cache curl jq bind-tools
-  script:
-    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
-    - echo "Resolved virtual machine IP - $VM_IP"
-    - export DNS_CONTENT="$VM_IP"
-    - !reference [.cloudflare-update-script, script]
-
-deploy:traefik:nas-srv:update-s3-dns-entry:
-  stage: deploy
-  image: alpine:${ALPINE_IMAGE_VERSION}
-  needs:
-    - "deploy:traefik:nas-srv:start-service"
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
-  variables:
-    DNS_RECORD_TYPE: "A"
-    DNS_TTL: 120
-    DNS_PROXIED: "false"
-    CLOUDFLARE_DNS_ENTRY_NAME: "s3.intranet.xbhl.online"
-  before_script:
-    - apk add --no-cache curl jq bind-tools
-  script:
-    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
-    - echo "Resolved virtual machine IP - $VM_IP"
-    - export DNS_CONTENT="$VM_IP"
-    - !reference [.cloudflare-update-script, script]
-
-deploy:traefik:nas-srv:update-ldap-dns-entry:
-  stage: deploy
-  image: alpine:${ALPINE_IMAGE_VERSION}
-  needs:
-    - "deploy:traefik:nas-srv:start-service"
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
-  variables:
-    DNS_RECORD_TYPE: "A"
-    DNS_TTL: 120
-    DNS_PROXIED: "false"
-    CLOUDFLARE_DNS_ENTRY_NAME: "ldap.intranet.xbhl.online"
-  before_script:
-    - apk add --no-cache curl jq bind-tools
-  script:
-    - export VM_IP=$(dig +short nas.srv.xbhl.intranet)
-    - echo "Resolved virtual machine IP - $VM_IP"
-    - export DNS_CONTENT="$VM_IP"
-    - !reference [.cloudflare-update-script, script]
-
 # Append node-specific VM_IP to .env before copying files to destination
 deploy:traefik:media-vm:deploy-files:
   before_script:
@@ -257,3 +156,31 @@ deploy:traefik:nas-srv:deploy-files:
   before_script:
     - !reference [.ssh-job-base:traefik:nas-srv, before_script]
     - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+# Additional Jobs to update DNS records for QNAP domain records as it's not Docker service
+deploy:traefik:nas-srv:update-additional-dns-records:
+  stage: deploy
+  image: alpine:${ALPINE_IMAGE_VERSION}
+  needs:
+    - "deploy:traefik:nas-srv:start-service"
+    - "deploy:traefik:nas-srv:resolve-host-ip"
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+  variables:
+    DNS_RECORD_TYPE: "A"
+    DNS_TTL: 120
+    DNS_PROXIED: "false"
+  parallel:
+    matrix:
+      - CLOUDFLARE_DNS_ENTRY_NAME:
+          - "nas.xbhl.online"
+          - "nas.intranet.xbhl.online"
+          - "objectstorage.nas.intranet.xbhl.online"
+          - "s3.intranet.xbhl.online"
+          - "ldap.intranet.xbhl.online"
+  before_script:
+    - apk add --no-cache curl jq
+  script:
+    - echo "Resolved virtual machine IP - $VM_IP"
+    - export DNS_CONTENT="$VM_IP"
+    - !reference [.cloudflare-update-script, script]
