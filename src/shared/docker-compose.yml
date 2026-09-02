@@ -3,8 +3,8 @@ services:
         image: ghcr.io/traefik/traefik:v3.7.12
         container_name: traefik
         ports:
-            - "80:80"
-            - "443:443"
+            - "${VM_IP:-0.0.0.0}:80:80"
+            - "${VM_IP:-0.0.0.0}:443:443"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /etc/ssl/certs:/etc/ssl/certs:ro
