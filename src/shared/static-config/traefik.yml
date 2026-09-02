@@ -2,6 +2,7 @@ entryPoints:
     web:
         address: ":80"
         http:
+            aliasHeadersStrategy: delete
             redirections:
                 entryPoint:
                     to: websecure
@@ -14,6 +15,7 @@ entryPoints:
             respondingTimeouts:
                 readTimeout: 3600
         http:
+            aliasHeadersStrategy: delete
             tls:
                 certResolver: letsencrypt_prod
                 domains:
@@ -32,6 +34,8 @@ entryPoints:
         address: ":8883"
     mqtt-webockets:
         address: ":9002"
+        http:
+            aliasHeadersStrategy: delete
 
 serversTransport:
     insecureSkipVerify: false
