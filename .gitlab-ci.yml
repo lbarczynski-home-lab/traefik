@@ -221,3 +221,39 @@ deploy:traefik:nas-srv:update-ldap-dns-entry:
     - echo "Resolved virtual machine IP - $VM_IP"
     - export DNS_CONTENT="$VM_IP"
     - !reference [.cloudflare-update-script, script]
+
+# Append node-specific VM_IP to .env before copying files to destination
+deploy:traefik:media-vm:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:media-vm, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+deploy:traefik:infrastructure-vm:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:infrastructure-vm, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+deploy:traefik:dns-vm:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:dns-vm, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+deploy:traefik:cloud-vm:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:cloud-vm, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+deploy:traefik:ha-vm:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:ha-vm, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+deploy:traefik:code-vm:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:code-vm, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
+
+deploy:traefik:nas-srv:deploy-files:
+  before_script:
+    - !reference [.ssh-job-base:traefik:nas-srv, before_script]
+    - echo "VM_IP=$VM_IP" >> "$BUILD_ARTIFACTS_DIR/.env"
