@@ -1,6 +1,6 @@
 services:
     traefik:
-        image: ghcr.io/traefik/traefik:v3.7.12
+        image: ghcr.io/traefik/traefik:v3.7.13
         container_name: traefik
         ports:
             - "${VM_IP:-0.0.0.0}:80:80"
