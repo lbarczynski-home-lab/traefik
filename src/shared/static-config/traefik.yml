@@ -71,4 +71,4 @@ api:
 ping: {}
 
 log:
-    level: WARN
+    level: INFO

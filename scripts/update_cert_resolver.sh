@@ -14,4 +14,4 @@ if [ ! -f "$TARGET_FILE" ]; then
 fi
 
 echo "Overriding certResolver in $TARGET_FILE to $RESOLVER_NAME..."
-sed -i "/certResolver/s/letsencrypt_prod/$RESOLVER_NAME/g" "$TARGET_FILE"
+sed -i -E "/(certResolver|resolver)/s/letsencrypt_prod/$RESOLVER_NAME/g" "$TARGET_FILE"

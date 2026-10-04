@@ -1,0 +1,13 @@
+tls:
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: "letsencrypt_prod"
+        domain:
+          main: "xbhl.online"
+          sans:
+            - "*.xbhl.online"
+            - "*.intranet.xbhl.online"
+            - "*.nas.intranet.xbhl.online"
+            - "*.ha.intranet.xbhl.online"
+            - "*.ai.intranet.xbhl.online"
