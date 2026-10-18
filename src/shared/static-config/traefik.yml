@@ -24,6 +24,7 @@ entryPoints:
                           - "*.nas.intranet.xbhl.online"
                           - "*.ha.intranet.xbhl.online"
                           - "*.ai.intranet.xbhl.online"
+                          - "*.proxy.intranet.xbhl.online"
     mqtt:
         address: ":1883"
     mqtts:

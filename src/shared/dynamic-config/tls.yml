@@ -11,3 +11,4 @@ tls:
             - "*.nas.intranet.xbhl.online"
             - "*.ha.intranet.xbhl.online"
             - "*.ai.intranet.xbhl.online"
+            - "*.proxy.intranet.xbhl.online"
