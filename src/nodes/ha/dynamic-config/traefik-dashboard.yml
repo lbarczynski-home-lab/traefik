@@ -1,6 +1,6 @@
 http:
     routers:
         traefik-ha-dashboard-router:
-            rule: "Host(`traefik.ha.intranet.xbhl.online`)"
+            rule: "Host(`ha.proxy.intranet.xbhl.online`)"
             service: api@internal
             tls: true
