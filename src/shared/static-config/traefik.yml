@@ -25,6 +25,7 @@ entryPoints:
                           - "*.ha.intranet.xbhl.online"
                           - "*.ai.intranet.xbhl.online"
                           - "*.proxy.intranet.xbhl.online"
+                          - "*.portainer.intranet.xbhl.online"
     mqtt:
         address: ":1883"
     mqtts:
