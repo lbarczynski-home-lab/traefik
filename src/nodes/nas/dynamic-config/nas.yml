@@ -26,6 +26,12 @@ http:
         - "websecure"
       service: nas-object-storage
 
+    mcp-nas-router:
+      rule: "Host(`mcp.nas.intranet.xbhl.online`)"
+      entryPoints:
+        - "websecure"
+      service: nas-mcp
+
   middlewares:
     main-to-intranet-qnap-redirect:
       redirectRegex:
@@ -41,6 +47,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://nas.srv.xbhl.intranet:8010"
+    nas-mcp:
+      loadBalancer:
+        servers:
+          - url: "http://nas.srv.xbhl.intranet:8442/mcp"
 
 tcp:
   routers:
