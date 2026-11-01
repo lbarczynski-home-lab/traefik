@@ -178,6 +178,7 @@ deploy:traefik:nas-srv:update-additional-dns-records:
           - "objectstorage.nas.intranet.xbhl.online"
           - "s3.intranet.xbhl.online"
           - "ldap.intranet.xbhl.online"
+          - "mcp.nas.intranet.xbhl.online"
   script:
     - !reference [.base:dns:cloudflare:direct:init, script]
     - !reference [.base:dns:cloudflare:record:find, script]
