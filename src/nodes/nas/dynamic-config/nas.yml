@@ -38,11 +38,16 @@ http:
         regex: "^https://nas.xbhl.online/(.*)"
         replacement: "https://nas.intranet.xbhl.online/${1}"
 
+  serversTransports:
+    qnap-transport:
+      insecureSkipVerify: true
+
   services:
     nas:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:8080"
+          - url: "https://host.docker.internal:8080"
+        serversTransport: "qnap-transport"
     nas-object-storage:
       loadBalancer:
         servers:
