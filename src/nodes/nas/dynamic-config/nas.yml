@@ -46,16 +46,16 @@ http:
     nas:
       loadBalancer:
         servers:
-          - url: "https://host.docker.internal:8080"
+          - url: "https://nas.srv.xbhl.intranet:8080"
         serversTransport: "qnap-transport"
     nas-object-storage:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:8010"
+          - url: "http://nas.srv.xbhl.intranet:8010"
     nas-mcp:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:8442/mcp"
+          - url: "http://nas.srv.xbhl.intranet:8442/mcp"
 
 tcp:
   routers:
@@ -70,4 +70,4 @@ tcp:
     ldap-nas:
       loadBalancer:
         servers:
-          - address: "host.docker.internal:389"
+          - address: "nas.srv.xbhl.intranet:389"
