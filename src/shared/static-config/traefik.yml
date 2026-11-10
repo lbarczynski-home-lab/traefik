@@ -74,3 +74,9 @@ ping: {}
 
 log:
     level: INFO
+
+experimental:
+    plugins:
+        query-modification:
+            moduleName: "github.com/kingjan1999/traefik-plugin-query-modification"
+            version: "v1.0.0"
