@@ -10,7 +10,7 @@ default:
       fi
 
 include:
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: media.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -25,7 +25,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: infrastructure.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -40,7 +40,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: dns.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -55,7 +55,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: cloud.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -70,7 +70,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: ha.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -85,7 +85,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: code.vm.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -100,7 +100,7 @@ include:
       cloudflare-dns-api-token: $CLOUDFLARE_DNS_API_TOKEN
       delete-existing-container-files: true
 
-  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.0
+  - component: $CI_SERVER_FQDN/home-lab/automations/docker-compose-service-deployment@v2.1.4
     inputs:
       vm-hostname: nas.srv.xbhl.intranet
       vm-ssh-username: $SSH_USER
@@ -167,9 +167,6 @@ deploy:traefik:nas-srv:update-additional-dns-records:
     - "deploy:traefik:nas-srv:resolve-host-ip"
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
-  variables:
-    CF_ZONE_ID: "$CLOUDFLARE_ZONE_ID"
-    CF_API_TOKEN: "$CLOUDFLARE_DNS_API_TOKEN"
   parallel:
     matrix:
       - DNS_RECORD_NAME:
@@ -180,7 +177,5 @@ deploy:traefik:nas-srv:update-additional-dns-records:
           - "ldap.intranet.xbhl.online"
           - "mcp.nas.intranet.xbhl.online"
   script:
-    - !reference [.base:dns:cloudflare:direct:init, script]
-    - !reference [.base:dns:cloudflare:record:find, script]
-    - !reference [.base:dns:cloudflare:record:create, script]
-    - !reference [.base:dns:cloudflare:record:update, script]
+    - !reference [.base:dns:register-cloudflare-helpers, script]
+    - cf_dns_sync_direct_record "$CLOUDFLARE_DNS_API_TOKEN" "$CLOUDFLARE_ZONE_ID" "$DNS_RECORD_NAME" "$VM_IP"
