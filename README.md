@@ -1,6 +1,6 @@
 # Traefik
 
-> Version: `v3.7.18` | Image: `ghcr.io/traefik/traefik:v3.7.18` | Upstream: https://github.com/traefik/traefik
+> Version: `v3.7.19` | Image: `ghcr.io/traefik/traefik:v3.7.19` | Upstream: https://github.com/traefik/traefik
 
 Distributed edge router and reverse proxy deployed across 7 homelab hosts from a shared base (`src/shared`) overlaid with per-node dynamic routing rules (`src/nodes/<node>`).
 
